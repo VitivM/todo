@@ -1,0 +1,27 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}Список дел{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1 class="mb-4">Список дел</h1>
+  <div class="list-group">
+    {% for task in tasks %}
+      <div class="list-group-item list-group-item-action flex-column align-items-start mb-2">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1"><strong>{{ task.title }}</strong></h5>
+          <small>Дата создания: {{ task.created_at|date:"d.m.Y H:i" }}</small>
+        </div>
+        <p class="mb-1">{{ task.description }}</p>
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <form action="{% url 'task_delete' task.pk %}" method="POST" style="margin-right: 10px;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+          </form>
+          <a href="{% url 'task_update' task.pk %}" class="btn btn-secondary btn-sm">Редактировать</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
